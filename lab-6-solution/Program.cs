@@ -11,6 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<AppDbContext>(
 options => options.UseSqlite(builder.Configuration["Data:ConnectionString"]));
+builder.Services.AddSingleton<IClockProvider, DefaultClock>();
 builder.Services.AddScoped<IBookService,BookServiceEF>();
 builder.Services.AddScoped<IAuthorService,AuthorServiceEF>();
 var app = builder.Build();

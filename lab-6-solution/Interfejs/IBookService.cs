@@ -11,6 +11,10 @@ namespace lab_6.Interfejs
         public ICollection<Book> FindAll();
         public ICollection<Book> FindByAuthor(Author author);
         public ICollection<Book> FindPage(int page, int size);
+        public (string Error, int? Age) BookAge(int? id);
+
     }
+
+
 
 }

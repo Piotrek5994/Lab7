@@ -8,11 +8,13 @@ namespace lab_6.Controllers
     public class BookController : Controller
     {
         private readonly IBookService _bookService;
-        public BookController(AppDbContext context, IBookService bookService)
+        private readonly IClockProvider _clock;
+        public BookController(IBookService bookService, IClockProvider clock)
         {
             _bookService = bookService;
+            _clock = clock;
         }
-       
+
         public IActionResult Index()
         {
             return View(_bookService.FindAll());
@@ -79,6 +81,14 @@ namespace lab_6.Controllers
             }
             return Problem("Trying delete no existing book");
         }
+        public string Age(int? id)
+        {
+            var find = _bookService.FindBy(id);
+            return find is null
+           ? "Brak takiej ksiązki"
+           : $"Wiek książki {_clock.Now().Year - find.ReleaseDate.Year}";
+        }
+
     }
 
 }

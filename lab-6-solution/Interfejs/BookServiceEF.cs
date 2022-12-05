@@ -7,9 +7,13 @@ namespace lab_6.Interfejs
     {
 
         private readonly AppDbContext _context;
+        private readonly IClockProvider _clock;
+        
+
         public BookServiceEF(AppDbContext context) : base()
         {
             _context = context;
+            _clock = new DefaultClock();
         }
 
         public int Save(Book book)
@@ -81,6 +85,19 @@ namespace lab_6.Interfejs
             .Take(page)
             .ToHashSet();
         }
-
+        public (string,int?) BookAge(int? id)
+        {
+            if (id is null)
+            {
+                return ("Book not found",null);
+            }
+            var book = _context.Books.Find(id);
+            if (book is null)
+            {
+                return ("Book not found",null);
+            }
+            var age = _clock.Now().Year - book.ReleaseDate.Year;
+            return ($"Book age is",age);
+        }
     }
 }
